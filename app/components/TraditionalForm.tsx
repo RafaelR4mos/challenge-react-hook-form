@@ -3,14 +3,14 @@
 import { Button } from "@/components/button";
 import { Input } from "@/components/input";
 import { Label } from "@/components/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { formErrorSchema } from "../utils/formErrorSchema";
 
 function TraditionalForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    cpf: 11122233344,
+    cpf: "",
     password: "",
     confirmPassword: "",
   });
@@ -25,31 +25,34 @@ function TraditionalForm() {
     }));
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  function validateFields() {
     setFormErrors([]);
 
+    if (formData.name.length <= 0) {
+      setFormErrors((prevErrors) => [
+        ...prevErrors,
+        {
+          field: "name",
+          error: "O campo 'name' não deve ser vazio",
+        },
+      ]);
+    }
+
+    if (formData.email.length <= 0) {
+      setFormErrors((prevErrors) => [
+        ...prevErrors,
+        {
+          field: "email",
+          error: "O campo 'email' não deve ser vazio",
+        },
+      ]);
+    }
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
     try {
-      if (formData.name.trim.length <= 0) {
-        setFormErrors((prevErrors) => [
-          ...prevErrors,
-          {
-            field: "name",
-            error: "O campo 'name' não deve ser vazio",
-          },
-        ]);
-      }
-
-      if (formData.email.trim.length <= 0) {
-        setFormErrors((prevErrors) => [
-          ...prevErrors,
-          {
-            field: "email",
-            error: "O campo 'email' não deve ser vazio",
-          },
-        ]);
-      }
-
       if (formErrors.length > 0) {
         throw new Error("Campos inválidos");
       }
@@ -61,7 +64,9 @@ function TraditionalForm() {
     }
   }
 
-  console.log(formErrors);
+  useEffect(() => {
+    validateFields();
+  }, [formData]);
 
   return (
     <form
@@ -111,10 +116,9 @@ function TraditionalForm() {
         <div>
           <Label htmlFor="cpf">Digite seu cpf</Label>
           <Input
-            type="number"
             id="cpf"
             name="cpf"
-            placeholder="00011122233"
+            placeholder="cpf"
             value={formData.cpf}
             onChange={handleChangeInput}
           />

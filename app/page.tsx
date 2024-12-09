@@ -1,5 +1,5 @@
-import Image from "next/image";
-import TraditionalForm from "./components/TraditionalForm";
+import ReactHookForm from "./components/ReactHookForm";
+// import TraditionalForm from "./components/TraditionalForm";
 
 export default function Home() {
   return (
@@ -7,7 +7,8 @@ export default function Home() {
       <h1 className="font-bold text-3xl">React hook form</h1>
 
       <div className="flex gap-4">
-        <TraditionalForm />
+        {/* <TraditionalForm /> */}
+        <ReactHookForm />
       </div>
     </main>
   );
